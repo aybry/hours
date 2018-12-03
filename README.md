@@ -25,7 +25,7 @@ python3 hours.py
 
 Communicate with your bot via Telegram. Initialise your own data with `/start`. To change the name it has saved for you, use `/newname`. 
 
-To check in or out, use `/in` or `out`, respectively.
+To check in or out, use `/in` or `/out`, respectively.
 
 To see a summary of the hours you have saved, use `/summary`. 
 

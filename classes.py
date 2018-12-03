@@ -2,7 +2,8 @@ from tools import *
 from os import listdir
 import telebot
 
-bot_token = "527000621:AAFw5L5fQ_anKOTkRCa03JC2YeRxNz4g1E8"
+with open('bot_token', 'r') as f:
+    bot_token = f.read()
 bot = telebot.TeleBot(token = bot_token)
 
 class User(object):
