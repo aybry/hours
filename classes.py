@@ -32,7 +32,6 @@ class User(object):
     def check_in_out(self, in_out):
         date_label = datetime.fromtimestamp(self.latest_timestamp).strftime('%Y%m%d')
         try:
-            # data_tag = max(int(self.checkin_data.keys())) + 1
             self.checkin_data[date_label][in_out] = self.latest_timestamp
         except KeyError:
             self.checkin_data[date_label] = {}

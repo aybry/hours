@@ -91,10 +91,8 @@ def cmd_check_in_out(m):
     user.last_action = 'Checking ' + in_out
     save_json(user)
     bot.send_message(user.id, 'You are checking ' + in_out 
-                            + ' on ' 
-                            + current_datetime.strftime('%d.%m.%Y') 
-                            + ' at ' 
-                            + current_datetime.strftime('%H:%M') 
+                            + ' on ' + current_datetime.strftime('%d.%m.%Y') 
+                            + ' at ' + current_datetime.strftime('%H:%M') 
                             + '. Is this correct?', 
                      reply_markup=yes_no_buttons())
     bot.register_next_step_handler(m, process_check_answer)
@@ -122,7 +120,7 @@ def process_check_answer(m):
     elif m.text.lower() == 'no':
         new_name_message = bot.send_message(user.id, 'At what time do you want to check ' 
                                                     + in_out 
-                                                    + '? \n\nFormat: hhmm')
+                                                    + '? (Format: hhmm)')
         bot.register_next_step_handler(new_name_message, process_time_step)
     else:
         print('Error at process_check_answer')
@@ -169,9 +167,14 @@ bot.enable_save_next_step_handlers(delay=1)
 bot.load_next_step_handlers()
 
 bot.set_update_listener(listener)
+
 if __name__ == '__main__':
     while True:
         try:
             bot.polling(none_stop=True)
         except Exception as ex:
             logger.error(ex)
+            time.sleep(10)
+        except:
+            logger.error('Some other error')
+            time.sleep(10)
