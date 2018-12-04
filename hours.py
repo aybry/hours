@@ -183,12 +183,10 @@ bot.enable_save_next_step_handlers(delay=1)
 # # WARNING It will work only if enable_save_next_step_handlers was called!
 bot.load_next_step_handlers()
 
-bot.infinity_polling(True)
 bot.set_update_listener(listener)
 
-
 def main_loop():
-    bot.polling(True)
+    bot.infinity_polling(True)
     while True:
         time.sleep(3)
 
