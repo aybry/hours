@@ -1,8 +1,9 @@
 import telebot
 import json
-import re
+# import re
 import time
 import logging
+import sys
 from telebot import types
 from tools import *
 from classes import *
@@ -184,13 +185,15 @@ bot.load_next_step_handlers()
 
 bot.set_update_listener(listener)
 
-if __name__ == '__main__':
+
+def main_loop():
+    bot.polling(True)
     while True:
-        try:
-            bot.polling(none_stop=True)
-        except Exception as ex:
-            logger.error(ex)
-            time.sleep(10)
-        except:
-            logger.error('Some other error')
-            time.sleep(10)
+        time.sleep(3)
+
+if __name__ == '__main__':
+    try:
+        main_loop()
+    except Exception as ex:
+        logger.error(ex)
+        time.sleep(10)
