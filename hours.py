@@ -2,6 +2,7 @@ import telebot
 import json
 import re
 import time
+import logging
 from telebot import types
 from tools import *
 from classes import *
@@ -10,6 +11,8 @@ from datetime import datetime
 with open('bot_token', 'r') as f:
     bot_token = f.read()
 bot = telebot.TeleBot(token = bot_token)
+logger = telebot.logger
+logger.setLevel(logging.DEBUG)
 
 commands = {
     'start'     : 'Welcome message and user initialisation',
@@ -59,12 +62,12 @@ def change_username(m):
 
 def process_name_answer(m):
     user = User(m)
-    if m.text.lower() == 'yes':
+    if m.text.lower() in ['yes', 'y', 'ja']:
         bot.send_message(user.id, 'Saved name as ' 
                                 + user.username)
         user.is_new_user = False
         save_json(user)
-    elif m.text.lower() == 'no':
+    elif m.text.lower() in ['no', 'n', 'nein']:
         new_name_message = bot.send_message(user.id, 'So what is your name?')
         bot.register_next_step_handler(new_name_message, process_name_step)
     else:
@@ -165,6 +168,10 @@ bot.enable_save_next_step_handlers(delay=1)
 # # WARNING It will work only if enable_save_next_step_handlers was called!
 bot.load_next_step_handlers()
 
-
 bot.set_update_listener(listener)
-bot.polling(none_stop = True)
+if __name__ == '__main__':
+    while True:
+        try:
+            bot.polling(none_stop=True)
+        except Exception as ex:
+            logger.error(ex)

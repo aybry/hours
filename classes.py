@@ -32,13 +32,14 @@ class User(object):
     def check_in_out(self, in_out):
         date_label = datetime.fromtimestamp(self.latest_timestamp).strftime('%Y%m%d')
         try:
+            # data_tag = max(int(self.checkin_data.keys())) + 1
             self.checkin_data[date_label][in_out] = self.latest_timestamp
         except KeyError:
             self.checkin_data[date_label] = {}
             self.checkin_data[date_label][in_out] = self.latest_timestamp
         self.last_action = 'Checked ' + in_out
-        bot.send_message(self.id, 'Checked ' + in_out + ' successfully.')
         save_json(self)
+        bot.send_message(self.id, 'Checked ' + in_out + ' successfully.')
 
     def summarise(self):
         message = 'A summary of your hours so far.\n'
