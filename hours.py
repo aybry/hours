@@ -20,7 +20,7 @@ commands = {
     'in'        : 'Check in',
     'out'       : 'Check out',
     'summary'   : 'See summary of hours in database',
-    'active'    : 'Check if bot is online'
+    'active'    : 'Check if bot is online',
     'info'      : 'Lists available commands and their function',
     'help'      : 'Lists available commands and their function'
 }
