@@ -12,7 +12,7 @@ with open('bot_token', 'r') as f:
     bot_token = f.read()
 bot = telebot.TeleBot(token = bot_token)
 logger = telebot.logger
-logger.setLevel(logging.DEBUG)
+# logger.setLevel(logging.DEBUG)
 
 commands = {
     'start'     : 'Welcome message and user initialisation',
@@ -71,7 +71,7 @@ def process_name_answer(m):
         new_name_message = bot.send_message(user.id, 'So what is your name?')
         bot.register_next_step_handler(new_name_message, process_name_step)
     else:
-        print('Error in process_name_answer')
+        bot.send_message(user.id, 'Response not recognised. Action cancelled.')
 
 def process_name_step(m):
     user = User(m)
@@ -102,7 +102,10 @@ def process_check_answer(m):
     in_out = user.last_action.split()[-1]
     time_int = user.latest_timestamp
     date_label = datetime.fromtimestamp(user.latest_timestamp).strftime('%Y%m%d')
-    if m.text.lower() == 'yes':
+    if m.text.lower() == 'cancel':
+        bot.send_message(user.id, 'Cancelled.')
+        return
+    elif m.text.lower() == 'yes':
         try:
             if in_out in user.checkin_data[date_label].keys():
                 time_saved_ts = user.checkin_data[date_label][in_out]
@@ -120,14 +123,17 @@ def process_check_answer(m):
     elif m.text.lower() == 'no':
         new_name_message = bot.send_message(user.id, 'At what time do you want to check ' 
                                                     + in_out 
-                                                    + '? (Format: hhmm)')
+                                                    + '? (Format: hhmm) Or type \'cancel\' to cancel.')
         bot.register_next_step_handler(new_name_message, process_time_step)
     else:
-        print('Error at process_check_answer')
+        bot.send_message(user.id, 'Response not recognised. Action cancelled.')
 
 def process_time_step(m):
     user = User(m)
     time_formats = ['%H%M', '%H:%M', '%H.%M']
+    if m.text.lower() == 'cancel':
+        bot.send_message(user.id, 'Cancelled.')
+        return
     for time_format in time_formats:
         try:
             date_today_str = datetime.today().strftime('%Y%m%d')
@@ -145,10 +151,15 @@ def process_time_step(m):
 def process_overwrite_step(m):
     user = User(m)
     in_out = user.last_action.split()[-1]
-    if m.text.lower() == 'yes':
+    if m.text.lower() == 'cancel':
+        bot.send_message(user.id, 'Cancelled.')
+        return
+    elif m.text.lower() == 'yes':
         user.check_in_out(in_out)
     elif m.text.lower() == 'no':
         bot.send_message(user.id, 'Data was not changed.')
+    else:
+        bot.send_message(user.id, 'Response not recognised. Action cancelled.')
 
 @bot.message_handler(commands = ['summary'])
 def cmd_summary(m):
