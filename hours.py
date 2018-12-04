@@ -20,6 +20,7 @@ commands = {
     'in'        : 'Check in',
     'out'       : 'Check out',
     'summary'   : 'See summary of hours in database',
+    'active'    : 'Check if bot is online'
     'info'      : 'Lists available commands and their function',
     'help'      : 'Lists available commands and their function'
 }
@@ -37,6 +38,10 @@ def cmd_help(m):
 def testing(m):
     print("This command is out of action.")
 
+@bot.message_handler(commands = ['active'])
+def change_username(m):
+    user = User(m)
+    m = bot.send_message(user.id, 'Still alive and kicking!')
 
 @bot.message_handler(commands = ['start'])
 def begin(m):
