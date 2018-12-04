@@ -185,14 +185,9 @@ bot.load_next_step_handlers()
 
 bot.set_update_listener(listener)
 
-def main_loop():
-    bot.infinity_polling(True)
-    while True:
-        time.sleep(3)
-
 if __name__ == '__main__':
     try:
-        main_loop()
+        bot.infinity_polling(True)
     except Exception as ex:
         logger.error(ex)
         time.sleep(10)
